@@ -1,0 +1,89 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+% \usepackage{natbib}
+% \usepackage{graphicx} % figuras
+% \usepackage[export]{adjustbox} % loads also graphicx
+% \usepackage{float}
+% \usepackage[font=footnotesize]{caption}
+\usepackage{wrapfig}
+% Title Page
+\title{}
+\author{}
+
+
+\begin{document}
+
+On the interval (0,1) we consider a steady-state convection-diffusion-reaction equation, with homogeneous Neumann boundary conditions:
+
+\begin{align}\label{eq:1}
+ -D\frac{d^2u}{dx^2}+\lambda u= f(x), \\
+ -D\frac{du}{dx}(0)=0, \qquad -D\frac{du}{dx}(1)=0.
+\end{align}
+\begin{enumerate}
+ \item{Assignment 1} Derive the $weak$ formulation. \\
+ For this, we multiply Equation \eqref{eq:1} by the basis functions $\phi$ and integrate over the domain.\\
+ \begin{equation}\label{eq:2}
+ \int_{0}^{1} -D\phi\frac{d^2u}{dx^2}+\lambda \phi u dx= \int_{0}^{1}\phi f(x)dx 
+\end{equation}
+  \begin{align*}
+ =\int_{0}^{1} -D\left[\frac{du}{dx}\left(\phi\frac{du}{dx}\right)-\frac{d\phi}{dx}\frac{du}{dx}+\lambda \phi u \right]dx=\\
+ \int_{0}^{1} -D\mathbf{n}\cdot \phi\frac{du}{dx} ds+\int_{0}^{1}D\left[\frac{d\phi}{dx}\frac{du}{dx}+\lambda \phi u \right]dx
+\end{align*}
+But using Equation \eqref{eq:1} (bc) the first term above is zero, then we have:
+ \begin{equation}\label{eq:3}
+\int_{0}^{1}\left[D\frac{d\phi}{dx}\frac{du}{dx}+\lambda \phi u \right]dx= \int_{0}^{1}\phi f(x)dx
+\end{equation}
+\item{Assignment 2} Write the Galerkin formulation of the weak form as derived
+in the previous assignment for a general number of elements given by n (hence
+$x_n = 1$). Give the Galerkin equations, that is, the linear system in terms of
+\begin{equation}\label{eq:4}
+S\bar{u} = \bar{f},
+ \end{equation}
+all expressed in the basis-functions, $f(x)$, $\lambda$ and $D$.\\
+For the Galerkin formulation we approximate ${u}$ with the basis functions $\phi_j$ as:
+$$u(x)\sim \sum_{j=1}^na_j\phi_j(x).$$
+Approximating $u$ and substituting $\phi=\phi_i$ in Equation \eqref{eq:3} we have:
+ \begin{equation}\label{eq:5}
+\sum_{j=1}^na_j\int_{0}^{1}\left[D\frac{d\phi_i}{dx}\frac{d\phi_j}{dx}+\lambda \phi_i \phi_j \right]dx= \int_{0}^{1}\phi_i f(x)dx
+\end{equation}
+Then 
+\begin{align*}
+S_{ij}^{e_k}&=a_j\int_{e_k}\left[D\frac{d\phi_i}{dx}\frac{d\phi_j}{dx}+\lambda \phi_i \phi_j \right]dx, \qquad &S_{ij}=\sum_{k=1}^{nel}S_{ij},\\
+f_i^{e_k}&=\int_{e_k}\phi_i f(x)dx, \qquad &f_i=\sum_{k=1}^{nel}f_i^{e_k}.
+\end{align*}
+\item{Assignment 3} Write a matlab routine, called GenerateMesh.m that gener-
+ates an equidistant distribution of meshpoints over the interval [0, 1], where
+$x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n).
+
+\begin{table}[!h]\centering
+\begin{minipage}{1\textwidth}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 1}\\
+\hline
+\hspace{0.5cm}function [x]=GenerateMesh(n)\\
+\hspace{1cm}x = linspace(0,1,n);\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{minipage}
+\end{table}
+
+\itemize{Assignment 4} Write a routine, called GenerateTopology.m, that generates
+a two dimensional array, called elmat, which contains the indices of the ver-
+tices of each element, that is
+\begin{align*}
+&elmat(i, 1) = i. \qquad for i ∈ {1, . . . , n − 1}.\\
+&elmat(i, 2) = i + 1
+\end{align*}
+Next we compute the element matrix $S_{elem}$. In this case, the matrix is the
+same for each element, that is, if we consider element $e_i$ .
+
+
+\end{enumerate}
+
+\end{document}          
