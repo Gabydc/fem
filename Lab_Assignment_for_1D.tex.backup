@@ -60,7 +60,7 @@ ates an equidistant distribution of meshpoints over the interval [0, 1], where
 $x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n).
 
 \begin{table}[!h]\centering
-\begin{minipage}{1\textwidth}
+
 \begin{tabular}{ |l| } 
 \hline
 \textbf{Algorithm 1}\\
@@ -70,10 +70,9 @@ $x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n
 \hspace{0.5cm}end\\
 \hline
 \end{tabular}
-\end{minipage}
 \end{table}
 
-\itemize{Assignment 4} Write a routine, called GenerateTopology.m, that generates
+\item{Assignment 4} Write a routine, called GenerateTopology.m, that generates
 a two dimensional array, called elmat, which contains the indices of the ver-
 tices of each element, that is
 \begin{align*}
@@ -82,8 +81,105 @@ tices of each element, that is
 \end{align*}
 Next we compute the element matrix $S_{elem}$. In this case, the matrix is the
 same for each element, that is, if we consider element $e_i$ .
+\begin{table}[!h]\centering
 
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 1}\\
+\hline
+\hspace{0.5cm}function [elmat] = GenerateTopology(n)\\
+\hspace{1cm}elmat(i, 1) = i;\\
+\hspace{1cm}elmat(i, 2) = i + 1;\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
 
+\item{Assignment 5} Compute the element matrix, $S_{elem}$ over a generic line element $e_k$.\\
+For each element we have the following marix:
+
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+    \int_{e_k}D\phi'_{k-1}\phi'_{k-1}+\lambda \phi_{k-1} \phi_{k-1} dx & \int_{e_k}D\phi'_{k-1}\phi'_k+\lambda \phi_{k-1} \phi_k dx \\
+    &\\
+\int_{e_k}D\phi'_k\phi'_{k-1}+\lambda \phi_k \phi_{k-1} dx& \int_{e_k}D\phi'_k\phi'_k+\lambda \phi_k \phi_k dx
+\end{bmatrix}
+\end{equation*}
+According to Holland and Bell's Theorem, we have:
+\begin{align*}
+     &\int_{e_k}\phi_{k-1} \phi_{k-1} dx =\frac{||x_k-x_{k-1}||}{3}\\
+      &\int_{e_k}\phi_{k} \phi_{k-1} dx =\frac{||x_k-x_{k-1}||}{6} \\
+      &\int_{e_k}\phi'_{k-1}\phi'_{k-1} dx=\frac{1}{||x_k-x_{k-1}||}\\
+   &\int_{e_k}\phi'_{k-1}\phi'_{k} dx=-\frac{1}{||x_k-x_{k-1}||}
+\end{align*}
+Then we have 
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+  D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{3} &   -D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{6} \\
+    &\\
+-  D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{6}&   D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_{k}-x_{k-1}||}{3}
+\end{bmatrix}
+\end{equation*}
+But $||x_k-x_{k-1}|| = h=\frac{1}{n-1}$ then 
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+  D\frac{1}{h}+\lambda \frac{h}{3} &   -D\frac{1}{h}+\lambda \frac{h}{6} \\
+    &\\
+-  D\frac{1}{h}+\lambda \frac{h}{6}&   D\frac{1}{h}+\lambda \frac{h}{3}
+\end{bmatrix}
+\end{equation*}
+According to Newton-Cotes' Theorem, we have:
+\begin{align*}
+     &\int_{e_k}\phi_{k-1} f(x)dx =\frac{x_k-x_{k-1}}{2}f(x_k)
+\end{align*}
+
+\begin{equation*}
+ f{e_k}=
+\begin{bmatrix}
+    \int_{e_k}\phi_{k-1} f(x)dx \\\\
+\int_{e_k}\phi_k f(x)dx
+\end{bmatrix}
+\end{equation*}
+\item{Assignment 6} Write a matlab routine, called GenerateElementMatrix.m,
+in which $S_{elem}$ (2 x 2-matrix) is generated. 
+Subsequently, we are going to sum the connections of the vertices in each
+element matrix, over all the elements. The result is an n-by-n matrix, called
+S.
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 3}\\
+\hline
+\hspace{0.5cm}function [S]=GenerateElementMatrix(D,l,n)\\
+\hspace{1cm}h = 1/(n-1);\\
+\hspace{1cm}S(1,1) = D/h + l*h/3;\\
+\hspace{1cm}S(1,2) = -D/h + l*h/6;\\
+\hspace{1cm}S(2,1) = -D/h + l*h/6;\\
+\hspace{1cm}S(2,2) = D/h + l*h/3;\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\item{Assignment 7} Write a matlab routine, called AssembleMatrix.m, that performs
+this summation, such that S is first initialized as a zero n-by-n matrix
+and subsequently:\\
+\begin{equation} \label{eq:6}
+ S(elmat(i, j), elmat(i, k)) = S(elmat(i, j), elmat(i, k)) + Selem(j, k),
+\end{equation}
+for $ j, k \in \{1, 2\}$ over all elements $i \in \{1, . . . , n − 1\}$. Note that GenerateElementMatrix.m
+needs to be called for each element.
+Now, you developed a routine for the assembly of the large matrix S from
+the element matrices Selem for each element. This procedure is common
+for the construction of the large discretization matrices needed in Finite
+Element methods. The procedure, using the array elmat looks a bit overdone
+and complicated. However, this approach facilitates the application to multi
+dimensional problems. The next step is to generate a large right-hand side
+vector using the same procedure. First, we need the element vector.
 \end{enumerate}
 
 \end{document}          
