@@ -1,0 +1,436 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+% \usepackage{natbib}
+ \usepackage{graphicx} % figuras
+% \usepackage[export]{adjustbox} % loads also graphicx
+% \usepackage{float}
+% \usepackage[font=footnotesize]{caption}
+\usepackage{wrapfig}
+% Title Page
+\title{}
+\author{}
+
+
+\begin{document}
+1 Problem Statement
+We consider a circular slab of an infected organic fluid where pathogens (bacteria)
+consume oxygen, where a fluid flow is induced by motion. In this assignment,
+we only consider the consumption of the oxygen by the pathogens,
+and the diffusion of the oxygen through the tissue. Far away from the domain,
+the concentration of the oxygen is equal to the equilibrium in non-infected
+tissue and therefore, we assume the concentration to be equal to the equilibrium
+sufficiently far away. Since we are not able to consider an unbounded
+domain, we consider a circular domain with radius of 1 micrometer that is
+$\Omega=\{(x,y)\in \mathbb{R}^2|x^2+y^2<1\}$ with its boundary $\partial \Omega$. The dimensions are given
+in micrometers. In this assignment, we consider a steady-state equilibrium determined
+by diffusion and regeneration by the cells. The pathogens are treated
+as point sinks. Considering $n_{cell}$ cells, we solve
+\begin{equation}\label{eq:1}
+ -\nabla (D\nabla{u})+\nabla \cdot (u\mathbf{v}) +\sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x-\mathbf{x}_p})= 0, \qquad (x,y) \in \Omega, 
+ \end{equation}
+where $D$ denotes the diffusion coefficient, $\mathbf{v}$ represents the velocity vector of the
+gel-like fluid and $Q_k$ denotes the hormon secretion rate by cell k. Here u denotes
+the oxygen concentration. We use the convention $x = (x, y)$ to represent the
+spatial coordinates. Further, $\delta(.)$ represents the Dirac Delta Distribution, which
+is characterised by
+\begin{equation*}
+\begin{cases}
+    \delta(\mathbf{x})=0, &\qquad \text{if } \mathbf{x} \neq \mathbf{0},\\
+     \int_{\Omega }\delta (\mathbf{x}) d \Omega =1, &\qquad \text{where }\Omega \text{ contains the origin.}
+    \end{cases}
+\end{equation*}
+Next to the above partial differential equation, we consider the boundary condition
+\begin{equation}
+ -D\frac{\partial u}{\partial n}- \mathbf{v}\cdot \mathbf{n}u+ K(u-u^{\infty})=0,   \qquad (x,y) \in \partial \Omega, 
+ \end{equation}
+Here K denotes the transfer rate coefficient of the hormon between the boundary
+of the domain and its surroundings. For the computations, we use the following
+values:
+\begin{table}
+\begin{tabular}{ |c|c|c|} 
+
+Symbol &Value& Unit\\
+D &$2.3 \cdot 10^{−1}$& $\mu m^2/s$\\
+Q$_p$& $1 \cdot 10^{−1}$& $1/s$\\
+K &10 &$\mu m/s$\\
+$u^{\infty}$& 1 &mol\\
+$v_x$& $\frac{10}{\sqrt{2}}$&$\mu m/s$\\
+$v_y$& $\frac{5}{\sqrt{2}}$&$\mu m/s$\\
+\end{tabular}
+\end{table}
+We consider five cells, located at
+\begin{equation*}
+\begin{cases}
+    x_p = 0.6 cos(\frac{2\pi(p − 1)}{5}),\\
+     x_p = 0.6 sin(\frac{2\pi(p − 1)}{5}),
+    \end{cases}
+\end{equation*}
+$p \in \{1, . . . , 5\}$. In order to solve this problem, one needs to consider the following
+questions:
+1. Give the weak formulation of the problem (partial differential equation +
+boundary condition). Hint $\int_{\Omega }\delta (\mathbf{x}) f(\mathbf{x}) d \Omega =f(\mathbf{0})$.\\
+To derive the weak formulation, we multiply Equation \eqref{eq:1} by the basis functions $\phi$ and integrate over the domain.\\
+ \begin{equation}\label{eq:2}
+ \int_{\Omega}\phi\left[ -\nabla (D\nabla{u})+\nabla \cdot (u\mathbf{v}) +\sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=0.
+\end{equation}
+  \begin{align*}
+ \int_{\Omega}\left[ -\nabla (\phi D\nabla{u})+\nabla\phi D\nabla{u}+\phi \nabla \cdot (u\mathbf{v}) +\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=\\
+  =\int_{\partial\Omega} -\phi D\frac{\partial u}{\partial n}d\Gamma +\int_{\Omega}\left[\nabla\phi D\nabla{u}+\phi \nabla \cdot (u\mathbf{v}) +\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=\\
+\end{align*}
+But using Equation \eqref{eq:1} (bc) the first term above is zero, then we have:
+ \begin{equation}\label{eq:3}
+\int_{0}^{1}\left[D\frac{d\phi}{dx}\frac{du}{dx}+\lambda \phi u \right]dx= \int_{0}^{1}\phi f(x)dx
+\end{equation}
+
+2. Give the Galerkin equations (the system of linear equations).
+3. Give the element matrix and element vector for the internal elements.
+Distinguish between cases where the point sink lies inside or outside the
+considered element.
+
+
+\begin{enumerate}
+ \item{Assignment 1} Derive the $weak$ formulation. \\
+ 
+\item{Assignment 2} Write the Galerkin formulation of the weak form as derived
+in the previous assignment for a general number of elements given by n (hence
+$x_n = 1$). Give the Galerkin equations, that is, the linear system in terms of
+\begin{equation}\label{eq:4}
+S\bar{u} = \bar{f},
+ \end{equation}
+all expressed in the basis-functions, $f(x)$, $\lambda$ and $D$.\\
+For the Galerkin formulation we approximate ${u}$ with the basis functions $\phi_j$ as:
+$$u(x)\sim \sum_{j=1}^na_j\phi_j(x).$$
+Approximating $u$ and substituting $\phi=\phi_i$ in Equation \eqref{eq:3} we have:
+ \begin{equation}\label{eq:5}
+\sum_{j=1}^na_j\int_{0}^{1}\left[D\frac{d\phi_i}{dx}\frac{d\phi_j}{dx}+\lambda \phi_i \phi_j \right]dx= \int_{0}^{1}\phi_i f(x)dx
+\end{equation}
+Then 
+\begin{align*}
+S_{ij}^{e_k}&=a_j\int_{e_k}\left[D\frac{d\phi_i}{dx}\frac{d\phi_j}{dx}+\lambda \phi_i \phi_j \right]dx, \qquad &S_{ij}=\sum_{k=1}^{nel}S_{ij},\\
+f_i^{e_k}&=\int_{e_k}\phi_i f(x)dx, \qquad &f_i=\sum_{k=1}^{nel}f_i^{e_k}.
+\end{align*}
+\item{Assignment 3} Write a matlab routine, called GenerateMesh.m that gener-
+ates an equidistant distribution of meshpoints over the interval [0, 1], where
+$x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n).
+
+\begin{table}[!h]\centering
+
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 1}\\
+\hline
+\hspace{0.5cm}function [x]=GenerateMesh(n)\\
+\hspace{1cm}x = linspace(0,1,n);\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\item{Assignment 4} Write a routine, called GenerateTopology.m, that generates
+a two dimensional array, called elmat, which contains the indices of the ver-
+tices of each element, that is
+\begin{align*}
+&elmat(i, 1) = i. \qquad for i ∈ {1, . . . , n − 1}.\\
+&elmat(i, 2) = i + 1
+\end{align*}
+Next we compute the element matrix $S_{elem}$. In this case, the matrix is the
+same for each element, that is, if we consider element $e_i$.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 1}\\
+\hline
+\hspace{0.5cm}function [elmat] = GenerateTopology(n)\\
+\hspace{0.5cm}for i = 1 : n-1;\\
+\hspace{1cm}elmat(i, 1) = i;\\
+\hspace{1cm}elmat(i, 2) = i + 1;\\
+\hspace{0.5cm}end\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\item{Assignment 5} Compute the element matrix, $S_{elem}$ over a generic line element $e_k$.\\
+For each element we have the following marix:
+
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+    \int_{e_k}D\phi'_{k-1}\phi'_{k-1}+\lambda \phi_{k-1} \phi_{k-1} dx & \int_{e_k}D\phi'_{k-1}\phi'_k+\lambda \phi_{k-1} \phi_k dx \\
+    &\\
+\int_{e_k}D\phi'_k\phi'_{k-1}+\lambda \phi_k \phi_{k-1} dx& \int_{e_k}D\phi'_k\phi'_k+\lambda \phi_k \phi_k dx
+\end{bmatrix}
+\end{equation*}
+According to Holland and Bell's Theorem, we have:
+\begin{align*}
+     &\int_{e_k}\phi_{k-1} \phi_{k-1} dx =\frac{||x_k-x_{k-1}||}{3}\\
+      &\int_{e_k}\phi_{k} \phi_{k-1} dx =\frac{||x_k-x_{k-1}||}{6} \\
+      &\int_{e_k}\phi'_{k-1}\phi'_{k-1} dx=\frac{1}{||x_k-x_{k-1}||}\\
+   &\int_{e_k}\phi'_{k-1}\phi'_{k} dx=-\frac{1}{||x_k-x_{k-1}||}
+\end{align*}
+Then we have 
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+  D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{3} &   -D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{6} \\
+    &\\
+-  D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_k-x_{k-1}||}{6}&   D\frac{1}{||x_k-x_{k-1}||}+\lambda \frac{||x_{k}-x_{k-1}||}{3}
+\end{bmatrix}
+\end{equation*}
+But $||x_k-x_{k-1}|| = h=\frac{1}{n-1}$ then 
+\begin{equation*}
+ S^{e_k}=
+\begin{bmatrix}
+  D\frac{1}{h}+\lambda \frac{h}{3} &   -D\frac{1}{h}+\lambda \frac{h}{6} \\
+    &\\
+-  D\frac{1}{h}+\lambda \frac{h}{6}&   D\frac{1}{h}+\lambda \frac{h}{3}
+\end{bmatrix}
+\end{equation*}
+
+\item{Assignment 6} Write a matlab routine, called GenerateElementMatrix.m,
+in which $S_{elem}$ (2 x 2-matrix) is generated. 
+Subsequently, we are going to sum the connections of the vertices in each
+element matrix, over all the elements. The result is an n-by-n matrix, called
+S.
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 3}\\
+\hline
+\hspace{0.5cm}function [Selem]=GenerateElementMatrix(D,l,n)\\
+\hspace{1cm}h = 1/(n-1);\\
+\hspace{1cm}Selem(1,1) = D/h + l*h/3;\\
+\hspace{1cm}Selem(1,2) = -D/h + l*h/6;\\
+\hspace{1cm}Selem(2,1) = -D/h + l*h/6;\\
+\hspace{1cm}Selem(2,2) = D/h + l*h/3;\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\item{Assignment 7} Write a matlab routine, called AssembleMatrix.m, that performs
+this summation, such that S is first initialized as a zero n-by-n matrix
+and subsequently:\\
+\begin{equation} \label{eq:6}
+ S(elmat(i, j), elmat(i, k)) = S(elmat(i, j), elmat(i, k)) + Selem(j, k),
+\end{equation}
+for $ j, k \in \{1, 2\}$ over all elements $i \in \{1, . . . , n − 1\}$. Note that GenerateElementMatrix.m
+needs to be called for each element.
+Now, you developed a routine for the assembly of the large matrix S from
+the element matrices Selem for each element. This procedure is common
+for the construction of the large discretization matrices needed in Finite
+Element methods. The procedure, using the array elmat looks a bit overdone
+and complicated. However, this approach facilitates the application to multi
+dimensional problems. The next step is to generate a large right-hand side
+vector using the same procedure. First, we need the element vector.
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 4}\\
+\hline
+\hspace{0.5cm}function [S]=AssembleMatrix(elmat,Selem,n)\\
+\hspace{0.5cm}S = zeros(n,n);\\
+\hspace{0.5cm}for i = 1 : n-1\\
+\hspace{1cm}    for j = 1 : 2\\
+\hspace{1.5cm}    for k = 1 : 2\\
+ \hspace{2cm}           S(elmat(i, j), elmat(i, k)) = S(elmat(i, j), elmat(i, k))+Selem(j, k);\\
+ \hspace{1.5cm}       end\\
+\hspace{1cm}end\\
+\hspace{0.5cm}end\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\item{Assignment 8} Compute the element vector over a generic line-element.\\
+For this purpose, we proceed as follows
+
+\item{Assignment 9} Implementation of the right-hand vector:\\
+\begin{itemize}
+ \item[a] Write a matlab routine, called GenerateElementVector.m, that gives
+the vector felem (column vector of length 2). in which felem (1) and
+felem (2) respectively provide information about node i and node i + 1,
+which are the vertices of element $e_i$ . This is needed for all elements.
+Use $f (x) = 1$ here.\\
+According to Newton-Cotes' Theorem, we have:
+\begin{align*}
+     &\int_{e_k}\phi_{k-1} f(x)dx =\frac{x_k-x_{k-1}}{2}f(x_k)
+\end{align*}
+
+\begin{equation*}
+ f_{e_k}=
+\begin{bmatrix}
+    \int_{e_k}\phi_{k-1} f(x)dx \\\\
+\int_{e_k}\phi_k f(x)dx
+\end{bmatrix}
+\end{equation*}
+Then, for each element we have
+\begin{equation*}
+ f_{e_k}=\frac{h}{2}
+\begin{bmatrix}
+    f(x_{k-1})\\\\
+ f(x_{k})
+\end{bmatrix}=\frac{h}{2}
+\begin{bmatrix}
+    1\\\\
+ 1
+\end{bmatrix}
+\end{equation*}
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 5}\\
+\hline
+\hspace{0.5cm}function [felem]=GenerateElementVector(n)\\
+\hspace{0.5cm}h = 1 / (n-1);\\
+\hspace{0.5cm}for i=1:n-1\\
+\hspace{0.5cm}felem(1,i) = (h/2)*fn(x(i));\\
+\hspace{0.5cm}felem(2,i) = (h/2)*fn(x(i+1));\\
+\hspace{0.5cm}end\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\item[b] Write a matlab routine, called AssembleVector.m, that performs the
+following summation after setting $f = zeros(n, 1)$:
+\begin{equation}\label{eq:6}
+ f (elmat(i, j)) = f (elmat(i, j)) + felem (j),
+\end{equation}
+for $j \in \{1, 2\}$ over all elements $i \in \{1, . . . , n − 1\}$.
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 6}\\
+\hline
+\hspace{0.5cm}[f]=AssembleVector(felem,elmat,n)\\
+\hspace{0.5cm}f=zeros(n,1);\\
+\hspace{0.5cm}for i=1:n-1\\
+\hspace{1cm}for j=1:2\\
+\hspace{1.5cm}f(elmat(i,j)) = f(elmat(i,j)) + felem(j,i);\\
+\hspace{1cm}end\\
+\hspace{0.5cm}end\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+\end{table}
+
+\end{itemize}
+
+\item{Assignment 10} Run the assembly routines to get the matrix $S$ and vector
+$f$ for $n = 100$.
+
+\item{Assignment 11} Write the main program that gives the finite-element solution. Call the main program femsolve1d.m. 
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 7}\\
+\hline
+\hspace{0.5cm}clear all\\
+\hspace{0.5cm}[x] = GenerateMesh(n);\\
+\hspace{0.5cm}[elmat] = GenerateTopology(n);\\
+\hspace{0.5cm}[Selem] = GenerateElementMatrix(D,lambda,n);\\
+\hspace{0.5cm}[S] = AssembleMatrix(elmat,Selem,n);\\
+\hspace{0.5cm}[felem] = GenerateElementVector(n,fn,x(1:2));\\
+\hspace{0.5cm}[f] = AssembleVector(felem,elmat,n);\\
+\hspace{0.5cm} $u = S\backslash f$;\\
+\hspace{0.5cm}plot(x,u)\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\item{Assignment 12} Compute the Finite Element solution u for $f (x) = 1$, $D =
+1$, $\lambda = 1$ and $n = 100$ by using $u = S\backslash f$ in matlab. Plot the solution. Is this
+what you would expect?
+
+
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 7b}\\
+\hline
+\hspace{0.5cm}clear all\\
+\hspace{0.5cm}n = 100;\\
+\hspace{0.5cm}D = 1;\\
+\hspace{0.5cm}lambda = 1;\\
+\hspace{0.5cm}fn = @(x) 1;\\
+\hspace{0.5cm}[x] = GenerateMesh(n);\\
+\hspace{0.5cm}[elmat] = GenerateTopology(n);\\
+\hspace{0.5cm}[Selem] = GenerateElementMatrix(D,lambda,n);\\
+\hspace{0.5cm}[S] = AssembleMatrix(elmat,Selem,n);\\
+\hspace{0.5cm}[felem] = GenerateElementVector(n,fn,x);\\
+\hspace{0.5cm}[f] = AssembleVector(felem,elmat,n);\\
+\hspace{0.5cm} $u = S\backslash f$;\\
+\hspace{0.5cm}plot(x,u)\\
+\hline
+\end{tabular}
+\end{table}
+\begin{figure}
+\centering 
+\vspace{-10pt}
+\includegraphics[width=8cm,height=8cm,keepaspectratio]{result1.jpg}
+ %\vspace{-25pt}
+\caption{ Result $f (x) = 1$.}\label{fig:hep_2}
+\vspace{-10pt}
+\end{figure} 
+
+
+
+\item{Assignment 13} Choose $f (x) = sin(20x)$, do some experiments with several
+values of n (n = 10, 20, 40, 80 160). Plot the solutions for the various
+numbers of gridnodes in one plot. Explain what you see.
+\begin{table}
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 7c}\\
+\hline
+\hspace{0.5cm}clear all\\
+\hspace{0.5cm}close all\\
+\hspace{0.5cm}t = 0;\\
+\hspace{0.5cm}for n = [10 20 40 80 160]\\
+\hspace{1cm}n = 100;\\
+\hspace{1cm}D = 1;\\
+\hspace{1cm}lambda = 1;\\
+\hspace{1cm}fn = @(x) sin(20*x);\\
+\hspace{1cm}[x] = GenerateMesh(n);\\
+\hspace{01cm}[elmat] = GenerateTopology(n);\\
+\hspace{1cm}[Selem] = GenerateElementMatrix(D,lambda,n);\\
+\hspace{1cm}[S] = AssembleMatrix(elmat,Selem,n);\\
+\hspace{1cm}[felem] = GenerateElementVector(n,fn,x);\\
+\hspace{1cm}[f] = AssembleVector(felem,elmat,n);\\
+\hspace{1cm} $u = S\backslash f$;\\
+\hspace{1cm}plot(x,u)\\
+\hspace{1cm}hold on\\
+\hspace{1cm}t = t + 1;\\
+\hspace{1cm}name\{t\}=num2str(n);\\
+\hspace{0.5cm}end\\
+\hspace{0.5cm}legend(['n=' name\{1\}],['n=' name\{2\}],['n=' name\{3\}],['n=' name\{4\}],['n=' name\{5\}])\\
+\hline
+\end{tabular}
+\end{table}
+\begin{figure}
+\centering 
+\vspace{-10pt}
+\includegraphics[width=8cm,height=8cm,keepaspectratio]{result.jpg}
+ %\vspace{-25pt}
+\caption{ Results $f (x) = sin(20x)$.}\label{fig:hep_2}
+\vspace{-10pt}
+\end{figure} 
+\end{enumerate}
+
+
+
+\end{document}          
