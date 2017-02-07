@@ -1,0 +1,19 @@
+clear all
+close all
+for n=[10 20 40 80 160]
+%n=100;
+D=1;
+lambda=1;
+fn = @(x) sin(20*x);
+
+[x] = GenerateMesh(n);
+[elmat] = GenerateTopology(n);
+[Selem]=GenerateElementMatrix(D,lambda,n);
+[S]=AssembleMatrix(elmat,Selem,n);
+[felem]=GenerateElementVector(n,fn,x);
+[f]=AssembleVector(felem,elmat,n);
+u = S\f;
+
+plot(x,u)
+hold on
+end

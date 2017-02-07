@@ -1,0 +1,7 @@
+function [felem]=GenerateElementVector(n,fn,x)
+h=1/(n-1);
+
+felem(1) = fn(x(1));
+felem(2) = fn(x(2));
+felem = felem * (h/2);
+end
