@@ -60,7 +60,7 @@ ates an equidistant distribution of meshpoints over the interval [0, 1], where
 $x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n).
 
 \begin{table}[!h]\centering
-\begin{minipage}{1\textwidth}
+
 \begin{tabular}{ |l| } 
 \hline
 \textbf{Algorithm 1}\\
@@ -70,7 +70,7 @@ $x_1 = 0$ and $x_n = 1$ and $h =\frac{1}{n−1}$. You may use x = linspace(0,1,n
 \hspace{0.5cm}end\\
 \hline
 \end{tabular}
-\end{minipage}
+
 \end{table}
 
 \itemize{Assignment 4} Write a routine, called GenerateTopology.m, that generates
@@ -82,7 +82,20 @@ tices of each element, that is
 \end{align*}
 Next we compute the element matrix $S_{elem}$. In this case, the matrix is the
 same for each element, that is, if we consider element $e_i$ .
+\begin{table}[!h]\centering
 
+\begin{tabular}{ |l| } 
+\hline
+\textbf{Algorithm 1}\\
+\hline
+\hspace{0.5cm}function [elmat] = GenerateTopology(n)\\
+\hspace{1cm}elmat(i, 1) = i;\\
+\hspace{1cm}elmat(i, 2) = i + 1;\\
+\hspace{0.5cm}end\\
+\hline
+\end{tabular}
+
+\end{table}
 
 \end{enumerate}
 
