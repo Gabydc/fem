@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.1.5)  7 FEB 2017 17:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.1.5)  8 FEB 2017 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -157,6 +157,12 @@ Package: wrapfig 2003/01/31  v 3.6
 )
 (./Lab_Assignment_2D.aux
 
+LaTeX Warning: Label `eq:4' multiply defined.
+
+
+LaTeX Warning: Label `eq:5' multiply defined.
+
+
 LaTeX Warning: Label `eq:6' multiply defined.
 
 
@@ -265,55 +271,58 @@ Underfull \hbox (badness 10000) in paragraph at lines 71--77
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
-]
-Overfull \hbox (21.50142pt too wide) in paragraph at lines 86--86
-[] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 99--100
-
- []
-
-[2] [3]
-Underfull \hbox (badness 10000) in paragraph at lines 222--225
+] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
 
-Overfull \hbox (20.01733pt too wide) in paragraph at lines 239--255
+Underfull \hbox (badness 10000) in paragraph at lines 144--146
+
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 258--261
+
+ []
+
+
+Overfull \hbox (20.01733pt too wide) in paragraph at lines 275--291
 [][] 
  []
 
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
+
+Underfull \hbox (badness 10000) in paragraph at lines 296--297
 
  []
 
 [5] [6] <result1.jpg, id=34, 562.1pt x 421.575pt>
 File: result1.jpg Graphic file (type jpg)
  <use result1.jpg>
-Package pdftex.def Info: result1.jpg used on input line 387.
+Package pdftex.def Info: result1.jpg used on input line 423.
 (pdftex.def)             Requested size: 227.62352pt x 170.71764pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 421.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 457.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 421.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 457.
 
-Overfull \hbox (58.44957pt too wide) in paragraph at lines 399--426
+Overfull \hbox (58.44957pt too wide) in paragraph at lines 435--462
 [][] 
  []
 
 <result.jpg, id=35, 568.1225pt x 424.58624pt>
 File: result.jpg Graphic file (type jpg)
  <use result.jpg>
-Package pdftex.def Info: result.jpg used on input line 430.
+Package pdftex.def Info: result.jpg used on input line 466.
 (pdftex.def)             Requested size: 227.62639pt x 170.11655pt.
- [7 <./result1.jpg>] [8 <./result.jpg>] (./Lab_Assignment_2D.aux)
+ [7] [8 <./result1.jpg>] [9 <./result.jpg>] (./Lab_Assignment_2D.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -321,7 +330,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  3314 strings out of 494409
  44319 string characters out of 6164778
- 111564 words of memory out of 5000000
+ 110565 words of memory out of 5000000
  6514 multiletter control sequences out of 15000+600000
  6761 words of font info for 28 fonts, out of 8000000 for 9000
  372 hyphenation exceptions out of 8191
@@ -338,10 +347,10 @@ sfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
 5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Lab_Assignment_2D.pdf (8 pages, 181886 bytes).
+Output written on Lab_Assignment_2D.pdf (9 pages, 183351 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 59 compressed objects within 1 object stream
+ 88 PDF objects out of 1000 (max. 8388607)
+ 61 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

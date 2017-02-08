@@ -45,7 +45,7 @@ is characterised by
 \end{equation*}
 Next to the above partial differential equation, we consider the boundary condition
 \begin{equation}
- -D\frac{\partial u}{\partial n}- \mathbf{v}\cdot \mathbf{n}u+ K(u-u^{\infty})=0,   \qquad (x,y) \in \partial \Omega, 
+ D\frac{\partial u}{\partial n}- \mathbf{v}\cdot \mathbf{n}u+ K(u-u^{\infty})=0,   \qquad (x,y) \in \partial \Omega, 
  \end{equation}
 Here K denotes the transfer rate coefficient of the hormon between the boundary
 of the domain and its surroundings. For the computations, we use the following
@@ -75,21 +75,62 @@ questions:
 boundary condition). Hint $\int_{\Omega }\delta (\mathbf{x}) f(\mathbf{x}) d \Omega =f(\mathbf{0})$.\\
 To derive the weak formulation, we multiply Equation \eqref{eq:1} by the basis functions $\phi$ and integrate over the domain.\\
  \begin{equation}\label{eq:2}
- \int_{\Omega}\phi\left[ -\nabla (D\nabla{u})+\nabla \cdot (u\mathbf{v}) +\sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=0.
+ \int_{\Omega}\phi (-\nabla (D\nabla{u})+\nabla \cdot (u\mathbf{v}) +\sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p))d\Omega=0.
 \end{equation}
-  \begin{align*}
- \int_{\Omega}\left[ -\nabla (\phi D\nabla{u})+\nabla\phi D\nabla{u}+\phi \nabla \cdot (u\mathbf{v}) +\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=\\
-  =\int_{\partial\Omega} -\phi D\frac{\partial u}{\partial n}d\Gamma +\int_{\Omega}\left[\nabla\phi D\nabla{u}+\phi \nabla \cdot (u\mathbf{v}) +\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p)\right] d\Omega=\\
-\end{align*}
-But using Equation \eqref{eq:1} (bc) the first term above is zero, then we have:
- \begin{equation}\label{eq:3}
-\int_{0}^{1}\left[D\frac{d\phi}{dx}\frac{du}{dx}+\lambda \phi u \right]dx= \int_{0}^{1}\phi f(x)dx
-\end{equation}
+  \begin{align}\label{eq:3}\nonumber
+ &\int_{\Omega} -\nabla (\phi D\nabla{u})+\nabla\phi D\nabla{u}+ \nabla \cdot (\phi u\mathbf{v}) -\nabla \phi u\mathbf{v}+\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p) d\Omega=\\  \nonumber
+  &=\int_{\partial\Omega} -\phi D\frac{\partial u}{\partial n}+\phi \mathbf{v}\cdot \mathbf{n}ud\Gamma +\\ \nonumber
+  &+\int_{\Omega}\nabla\phi D\nabla{u}-\nabla\phi u\mathbf{v} d\Omega+\int_{\Omega}\phi \sum_{p=1}^{n_{cell}}Q_pu\delta(\mathbf{x}-\mathbf{x}_p) d\Omega=\\\nonumber
+  &=\int_{\partial\Omega} \phi K(u-u^{\infty})d\Gamma +\\\nonumber
+  &+\int_{\Omega}\nabla\phi (D\nabla{u}- u\mathbf{v}) d\Omega+\sum_{p=1}^{n_{cell}}Q_p\phi(\mathbf{x}_p) u(\mathbf{x}_p) =0\\
+\end{align}
 
 2. Give the Galerkin equations (the system of linear equations).
+For the Galerkin formulation we approximate ${u}$ with the basis functions $\phi_j$ as:
+$$u(x)\sim \sum_{j=1}^na_j\phi_j(x).$$
+Approximating $u$ and substituting $\phi=\phi_i$ in Equation \eqref{eq:3} we have:
+
+
+  \begin{align}\label{eq:4}\nonumber
+  &\sum_{j=1}^{n}a_j [ \int_{\partial\Omega} \phi_i K(\phi_j-u^{\infty})d\Gamma +\\\nonumber
+  &\int_{\Omega}\nabla\phi_i (D\nabla{\phi_j}- \phi_j\mathbf{v}) d\Omega+\sum_{p=1}^{n_{cell}}Q_p\phi_i(\mathbf{x}_p) \phi_j(\mathbf{x}_p)  ]=0 \\
+\end{align}
+
+  \begin{align}\label{eq:5}\nonumber
+  &\sum_{j=1}^{n}a_j[K\int_{\partial\Omega} \phi_i \phi_jd\Gamma +\int_{\Omega}\nabla\phi_i (D\nabla{\phi_j}- \phi_j\mathbf{v}) d\Omega+\sum_{p=1}^{n_{cell}}Q_p\phi_i(\mathbf{x}_p) \phi_j(\mathbf{x}_p)]=\\\nonumber
+   &=\int_{\partial\Omega} \phi_i K u^{\infty}d\Gamma  \\
+\end{align}
+
+
 3. Give the element matrix and element vector for the internal elements.
 Distinguish between cases where the point sink lies inside or outside the
 considered element.
+
+\begin{align*}
+ &S_{ij}=\sum_{j=1}^{n_{be}}S_{ij}^{be}+\sum_{j=1}^{n_e}S_{ij}^{e_k},\\
+ &f_{j}=\sum_{j=1}^{n_{be}}f_{i}^{be}+\sum_{j=1}^{n_e}f_{i}^{e_k}.
+\end{align*}
+For an internal element we have:
+\begin{align*}
+S_{ij}^{e_k}&=\int_{e_k}\nabla\phi_i (D\nabla{\phi_j}- \phi_j\mathbf{v}) d\Omega+\sum_{p=1}^{n_{cell}}Q_p\phi_i(\mathbf{x}_p) u\phi_j(\mathbf{x}_p),\\
+%S_{ij}^{be}&= \int_{be} \phi_i K\phi_jd\Gamma \\
+f_i^{e_k}&=0.
+%f_i^{e_k}&=\int_{\partial\Omega} \phi_i K u^{\infty}d\Gamma , \qquad &f_i=\sum_{k=1}^{nel}f_i^{e_k}.
+\end{align*}
+
+According to Holland and Bell's Theorem, we have:
+\begin{align*}
+     &\int_{e_k}\phi_{k} d\Omega =\frac{|\Delta|}{6}\\
+      &\int_{e_k}\phi_{k} \phi_{j} d\Omega =\frac{|\Delta|}{24} \\
+      &\int_{e_k}\phi'_{k-1}\phi'_{k-1} dx=\frac{1}{||x_k-x_{k-1}||}\\
+   &\int_{e_k}\phi'_{k-1}\phi'_{k} dx=-\frac{1}{||x_k-x_{k-1}||}
+\end{align*}
+Then we have 
+
+
+
+
+
 
 
 \begin{enumerate}
@@ -102,9 +143,7 @@ $x_n = 1$). Give the Galerkin equations, that is, the linear system in terms of
 S\bar{u} = \bar{f},
  \end{equation}
 all expressed in the basis-functions, $f(x)$, $\lambda$ and $D$.\\
-For the Galerkin formulation we approximate ${u}$ with the basis functions $\phi_j$ as:
-$$u(x)\sim \sum_{j=1}^na_j\phi_j(x).$$
-Approximating $u$ and substituting $\phi=\phi_i$ in Equation \eqref{eq:3} we have:
+
  \begin{equation}\label{eq:5}
 \sum_{j=1}^na_j\int_{0}^{1}\left[D\frac{d\phi_i}{dx}\frac{d\phi_j}{dx}+\lambda \phi_i \phi_j \right]dx= \int_{0}^{1}\phi_i f(x)dx
 \end{equation}
