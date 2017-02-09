@@ -7,15 +7,19 @@
 %
 % First the internal element contributions
 %
+%Generate the mesh
+WI4243Mesh
+
 % First Initialisation of large discretisation matrix, right-hand side vector
 
 S 		= sparse(n,n); % stiffness matrix
 
 f 		= zeros(n,1); % right-hand side vector
 
+
 %
 % Treatment of the internal (triangular) elements
-%
+
 
 for i = 1:length(elmat(:,1)) % for all internal elements
 	GenerateElementMatrix; % Selem	
@@ -44,3 +48,6 @@ for i = 1:length(elmatbnd(:,1)); % for all boundary elements extension of mass m
         f(elmatbnd(i,ind1)) = f(elmatbnd(i,ind1)) + bfelem(ind1);
     end;
 end;
+
+% WI4243Comp
+% WI4243Post

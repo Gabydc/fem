@@ -9,5 +9,5 @@ clear felem
 
 for index1 = 1:topology
 	    global_index = elmat(i,index1);
-		felem(index1) = abs(Delta)/6*1;
+		felem(index1) = 0;
 end;

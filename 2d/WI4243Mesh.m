@@ -2,7 +2,7 @@ clear all
 
 Geometry = 'circleg'; 
 
-DiffCoeff = 2.3e-1;
+DiffCoeff = 2.3*10^(-1);
 
 h_transfer = 10;
 

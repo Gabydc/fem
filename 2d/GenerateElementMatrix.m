@@ -23,8 +23,8 @@ clear Selem
 vx = 10 / sqrt(2);
 vy = 5 / sqrt(2);
 Qp = 1 *10^(-1);
-i=1
 ncell = 5;
+
 for index1 = 1:topology
 	xc(index1) = x(elmat(i,index1));
 	yc(index1) = y(elmat(i,index1));
@@ -38,24 +38,28 @@ alpha = B_mat(1,1:3);
 beta  = B_mat(2,1:3);
 gamma = B_mat(3,1:3);
 
-%Point sink inside
 
+ci = zeros(1,5);
 for p = 1 : 5
 xc1(p) = 0.6 * cos(2 * pi * (p-1) / 5);
 yc1(p) = 0.6 * sin(2 * pi * (p-1) / 5);
+
+Delta1 = det([1 xc1(p) yc1(p);1 xc(2) yc(2);1 xc(3) yc(3)]);
+Delta2 = det([1 xc(1) yc(1);1 xc1(p) yc1(p);1 xc(3) yc(3)]);
+Delta3 = det([1 xc(1) yc(1);1 xc(2) yc(2);1 xc1(p) yc1(p)]);
+
+Dc = abs(Delta1) + abs(Delta2) + abs(Delta3);
+if abs(Dc - Delta) < eps
+    ci(p) = 1;
+end
 end
 
-for index1 = 1:topology
-	for index2 = 1:topology
-        cell = 0 ;
-        for p = 1 : ncell
-            cell = cell + Qp * (alpha(index1)*alpha(index2)+beta(index1)*beta(index2)*(xc1(p)).^2+gamma(index1)*gamma(index2)*(yc1(p)).^2); 
-        end
-        Selem(index1,index2) = abs(Delta)/2*DiffCoeff*(beta(index1)*beta(index2)+gamma(index1)*gamma(index2)) + abs(Delta)/6*(vx*beta(index1)+vy*gamma(index1))+cell;
-	end;
-end;
+%Compute determinants of distance between mesh points and the cell
 
 
+
+
+if abs(ci*ci') == 0
 %Point sink outside
 
 for index1 = 1:topology
@@ -64,11 +68,21 @@ for index1 = 1:topology
 	end;
 end;
 
-%Boundary
+else
 
+%Point sink inside
 for index1 = 1:topology
 	for index2 = 1:topology
-        Selem(index1,index2) = abs(Delta)/2*DiffCoeff*(beta(index1)*beta(index2)+gamma(index1)*gamma(index2))+abs(Delta)/6*(vx*beta(index1)+vy*gamma(index1));
+        cell = 0 ;
+        for p = 1 : ncell
+            if ci(p) == 1
+            cell = cell + Qp * [alpha(index1)+beta(index1)*xc1(p)+gamma(index1)*yc1(p)] * [alpha(index2)+beta(index2)*xc1(p)+gamma(index2)*yc1(p)]; 
+            end
+        end
+        Selem(index1,index2) = abs(Delta)/2*DiffCoeff*(beta(index1)*beta(index2)+gamma(index1)*gamma(index2)) + abs(Delta)/6*(vx*beta(index1)+vy*gamma(index1))+cell;
 	end;
 end;
+
+end
+
 
